@@ -1,8 +1,10 @@
 # RestApi with Spring Boot
 
 ### 들어가며
-간단한 RestApi를 개발한다. 사용기술은
-Spring boot, Spring Data JPA 이며, 
+간단한 RestApi를 개발한다.예제로 활용할 예정이며 
+사용기술은
+Spring boot, Spring Data JPA, H2 DATABASE, Spring MVC 
+빌드 툴은 maven을 활용한다.
 추가적으로
   1. Exception Handling With Spring AOP
   2. Validation API
