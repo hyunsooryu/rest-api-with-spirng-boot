@@ -16,8 +16,8 @@ public class TestController {
     public String setCookie(HttpServletResponse response){
         Cookie loginCookie = new Cookie("loginYn","Y");
         loginCookie.setMaxAge(60 * 60 * 24 * 365);
-        loginCookie.setHttpOnly(true);
-       // loginCookie.setSecure(true); //https 에서만 쿠키를 보냄
+        loginCookie.setHttpOnly(true); //script에서 쿠키값 사용할 수 없고,
+       // loginCookie.setSecure(true); //https 에서만 쿠키를 보냄 - 네트워크 단에서 꺼내볼 수 없음.암호화 되어서
         response.addCookie(loginCookie);
         return loginCookie.getValue();
     }
