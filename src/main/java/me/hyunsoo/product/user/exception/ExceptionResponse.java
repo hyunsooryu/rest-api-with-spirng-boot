@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.net.URI;
 import java.util.Date;
 
 @Data
@@ -16,4 +17,5 @@ public class ExceptionResponse {
     private Date timeStamp;
     private String message;
     private String details;
+    private URI newLocation;
 }

@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.sql.Date;
 import java.time.Instant;
 
@@ -31,11 +33,26 @@ public class CustomizedResponseEntityExceptionHandler {
     //찾지 못했을 때
     @ExceptionHandler(UserNotFoundException.class)
     public final ResponseEntity handleNotFoundException(Exception ex, WebRequest request){
-        ExceptionResponse exceptionResponse = ExceptionResponse.builder().
-                timeStamp(Date.from(Instant.now()))
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .timeStamp(Date.from(Instant.now()))
                 .message(ex.getMessage())
                 .details(request.getDescription(false)).build();
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(NotLoginException.class)
+    public final ResponseEntity handleNotLoginException(Exception ex, WebRequest request){
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/user/login")
+                .build().toUri();
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .newLocation(location)
+                .timeStamp(Date.from(Instant.now()))
+                .message(ex.getMessage())
+                .details(request.getDescription(false)).build();
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exceptionResponse);
     }
 }
