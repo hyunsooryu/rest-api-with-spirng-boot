@@ -3,19 +3,25 @@ package me.hyunsoo.product.user;
 
 import lombok.RequiredArgsConstructor;
 import me.hyunsoo.product.user.exception.UserNotFoundException;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+
+/**
+ * jackson.dataformat.xml 의존성 추가시, ObjectMapper.creatXml(true)가 되기 때문에, XML도 HttpMessageConverter에서 컨버팅가능
+ */
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
     private final UserDaoService userDaoService;
 
-    @GetMapping("/users")
+    @GetMapping(value = "/users")
     public List<User> retrieveAllUsers(){
         return userDaoService.findAll();
     }
@@ -30,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody User user){
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user){
 
         User savedUser = userDaoService.save(user);
 

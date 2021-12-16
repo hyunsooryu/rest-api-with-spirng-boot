@@ -1,13 +1,16 @@
 package me.hyunsoo.product.user.exception;
 
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -17,7 +20,7 @@ import java.time.Instant;
 //ERROR 처리
 
 @RestControllerAdvice
-public class CustomizedResponseEntityExceptionHandler {
+public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     //전체적인 서버 에러 - 500X
     @ExceptionHandler(Exception.class)
@@ -54,5 +57,19 @@ public class CustomizedResponseEntityExceptionHandler {
                 .details(request.getDescription(false)).build();
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exceptionResponse);
+    }
+
+    //handleMethodArgumentNotValid -> ResponseEntity에 대해
+
+    //ResponseEntityExceptionHandler를 재정의해서 사용할 수 있다.!!! -2021-12-16
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .timeStamp(Date.from(Instant.now()))
+                .message("Validation Failed")
+                .details(ex.getBindingResult().toString()).build();
+
+        return new ResponseEntity<Object>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }
