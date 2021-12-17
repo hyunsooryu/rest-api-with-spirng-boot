@@ -10,3 +10,19 @@ spring:
   messages:
     basename: messages
 
+
+#  security:
+#    user:
+#      name: hyunsoo
+#      password: passw0rd
+
+#actuator management 설정
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+
+

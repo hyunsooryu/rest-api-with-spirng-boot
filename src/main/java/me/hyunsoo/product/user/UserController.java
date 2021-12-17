@@ -3,6 +3,10 @@ package me.hyunsoo.product.user;
 
 import lombok.RequiredArgsConstructor;
 import me.hyunsoo.product.user.exception.UserNotFoundException;
+import org.springframework.hateoas.EntityModel;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +31,21 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public User retrieveUser(@PathVariable int id){
+    public EntityModel<User> retrieveUser(@PathVariable int id){
         User user = userDaoService.findOne(id);
         if(user == null){
             throw new UserNotFoundException(String.format("ID[%s] not found", id));
         }
-        return user;
+
+        EntityModel<User> userEntityModel = EntityModel.of(user);
+
+        WebMvcLinkBuilder linkBuilder = linkTo(
+                methodOn(this.getClass()).retrieveAllUsers()
+        );
+
+        userEntityModel.add(linkBuilder.withRel("all-users"));
+
+        return userEntityModel;
     }
 
     @PostMapping("/users")
