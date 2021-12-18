@@ -14,6 +14,29 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.util.Locale;
 
+/**
+ *  1. Java Persistence API
+ *  자바 ORM 기술에 대한 API 표준 명세
+ *  자바 어플리케이션에서 관계형 데이터베이스를 사용하는 방식을 정의한 인터페이스
+ *  EntityManager를 통해 CRUD 처리
+ *
+ *  2. Hibernate
+ *  JPA의 구현체, 인터페이스를 직접 구현한 라이브러리
+ *  생산성, 유지보수, 비종속성
+ *
+ *  3. Spring Data JPA
+ *  Spring Module
+ *  JPA를 추상화환 Repository 인터페이스를 제공
+ *
+ *  JDBC -> Hibernate -> JPA -> SPRING DATA JPA
+ *
+ *
+ */
+
+
+
+
+
 @SpringBootApplication
 public class ProductApplication {
 
